@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title - My Telerik MVC Application</title>
+    <link href="https://kendo.cdn.telerik.com/2020.2.513/styles/kendo.material-v2.min.css" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/kendo.aspnetmvc.min.js"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</head>
+<body class="k-content">
+    <nav class="navbar navbar-inverse navbar-fixed-top p-3">
+        <div class="container p-0 p-sm-3" style="background-color:lightskyblue;border-radius:10px">
+            <div class="navbar-header">
+                <button id="configure" class="k-rpanel-toggle k-button btn-toggle"><span class="k-icon k-i-menu"></span></button>
+                @*<p style="font-family:cursive">@Html.ActionLink("Wing Tips", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</p>*@
+                @*<img src="~/Images/wing_tips.png" style="height:70px;width:200px"/>*@
+                <img src="~/Images/redHut.png" style="height:80px;width:90px" />
+            </div>
+            <div id="responsive-panel" class="navbar-left">
+                @(Html.Kendo().Menu()
+                        .Name("Menu")
+                        .Items(items =>
+                        {
+                            items.Add().Text("Home").Action("Index", "Home", new { area = "" });
+                            items.Add().Text("About").Action("About", "Home", new { area = "" });
+                            items.Add().Text("Contact").Action("Contact", "Home", new { area = "" });
+                            if (Session["UserName"] == null)
+                            {
+                                items.Add().Text("Sign-In").Action("Login", "Home", new { area = "" });
+                            }
+                            else
+                            {
+                                items.Add().Text("Sign-Out").Action("Logout", "Home", new { area = "" });
+                            }
+                        })
+                    )
+                @if (Session["UserName"] != null)
+                {
+                    <p style="float:right;padding-right:20px">Hi @Session["UserName"].ToString()!</p>
+                }
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="footer text-center d-flex align-items-center">
+        <div class="container pb-0">
+            <hr />
+            <p>Copyright &copy; @DateTime.Now.Year Progress Software Corporation and/or its subsidiaries or affiliates. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        $(document).ready(function () {
+            $("#responsive-panel").kendoResponsivePanel({
+                breakpoint: 768,
+                autoClose: false,
+                orientation: "top"
+            });
+        });
+        function onclick(e) {
+            $("#responsive-panel").getKendoResponsivePanel().toggle();
+        }
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
